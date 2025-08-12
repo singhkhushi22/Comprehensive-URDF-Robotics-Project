@@ -1,0 +1,235 @@
+<?xml version="1.0" ?>
+<robot name="drone" xmlns:xacro="http://ros.org/wiki/xacro">
+
+
+
+
+ 
+
+<link name="base_link">
+        <visual>
+            <geometry>
+                <box size="0.25 0.25 0.25"/>
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.25 0.25 0.25"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <origin xyz="0 0 0"/>
+            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+        </inertial>
+
+        <gazebo>
+    <plugin name="gazebo_ros_force" filename="libgazebo_ros_force.so">
+      <body_name>drone::base_link</body_name>
+    </plugin>
+  </gazebo>
+         
+    </link>
+
+
+     <link name="right_leg">
+        <visual>
+            <geometry>
+                <cylinder radius="0.01" length="0.12"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0.0 0.0 0.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.01" length="0.12"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <origin xyz="0 0 0"/>
+            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+        </inertial>
+         
+    </link>
+
+
+
+    <link name="left_leg">
+        <visual>
+            <geometry>
+                <cylinder radius="0.01" length="0.12"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0.0 0.0 0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.01" length="0.12"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <origin xyz="0 0 0"/>
+            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+        </inertial>
+        
+    </link>
+
+ <joint name="revolute_joint1" type="revolute">
+        <parent link="base_link"/>
+        <child link="right_leg"/>
+        <origin xyz="0 0.04 -0.15"/>
+        <axis xyz="0 0 1"/>
+        <limit effort="10.0" velocity="1.0" lower="-1.57" upper="1.57"/>
+    </joint>
+
+    <joint name="revolute_joint2" type="revolute">
+        <parent link="base_link"/>
+        <child link="left_leg"/>
+        <origin xyz="0 -0.04 -0.15"/>
+        <axis xyz="0 0 1"/>
+        <limit effort="10.0" velocity="1.0" lower="-1.57" upper="1.57"/>
+    </joint>
+
+    <link name="camera">
+        <visual>
+            <geometry>
+                <box size="0.075 0.075 0.075"/>
+            </geometry>
+            <material name="gray">
+                <color rgba="0.5 0.5 0.5 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.1 0.1 0.1"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <origin xyz="0 0 0"/>
+            <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+        </inertial>
+         
+    </link>
+
+    <joint name="revolute_joint3" type="revolute">
+        <parent link="base_link"/>
+        <child link="camera"/>
+        <origin xyz="0 0.0 -0.24"/>
+        <axis xyz="0 0 1"/>
+        <limit effort="10.0" velocity="1.0" lower="-1.57" upper="1.57"/>
+    </joint>
+
+
+    
+
+    
+
+
+
+
+
+<!-- Propellers with Gazebo Plugin -->
+  <link name="propeller_1">
+    <visual>
+      <geometry>
+        <cylinder radius="0.05" length="0.005"/>
+      </geometry>
+      <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0"/>
+      </material>
+    </visual>
+    <gazebo>
+      <plugin name="gazebo_ros_motor_model" filename="libgazebo_ros_motor_model.so">
+        <body_name>propeller_1</body_name>
+      </plugin>
+    </gazebo>
+  </link>
+  <joint name="tilt_joint_p1" type="revolute">
+    <parent link="base_link"/>
+    <child link="propeller_1"/>
+    <origin xyz="0.1 0.1 0.125"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="1.0" velocity="0.5" lower="-0.2" upper="0.2"/>
+  </joint>
+
+  <link name="propeller_2">
+    <visual>
+      <geometry>
+        <cylinder radius="0.05" length="0.005"/>
+      </geometry>
+      <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0"/>
+      </material>
+    </visual>
+    <gazebo>
+      <plugin name="gazebo_ros_motor_model" filename="libgazebo_ros_motor_model.so">
+        <body_name>propeller_2</body_name>
+      </plugin>
+    </gazebo>
+  </link>
+  <joint name="tilt_joint_p2" type="revolute">
+    <parent link="base_link"/>
+    <child link="propeller_2"/>
+    <origin xyz="-0.1 0.1 0.125"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="1.0" velocity="0.5" lower="-0.2" upper="0.2"/>
+  </joint>
+
+
+  <link name="propeller_3">
+    <visual>
+      <geometry>
+        <cylinder radius="0.05" length="0.005"/>
+      </geometry>
+      <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0"/>
+      </material>
+    </visual>
+    <gazebo>
+      <plugin name="gazebo_ros_motor_model" filename="libgazebo_ros_motor_model.so">
+        <body_name>propeller_3</body_name>
+      </plugin>
+    </gazebo>
+  </link>
+  <joint name="tilt_joint_p3" type="revolute">
+    <parent link="base_link"/>
+    <child link="propeller_3"/>
+    <origin xyz="0.1 -0.1 0.125"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="1.0" velocity="0.5" lower="-0.2" upper="0.2"/>
+  </joint>
+
+
+  <link name="propeller_4">
+    <visual>
+      <geometry>
+        <cylinder radius="0.05" length="0.005"/>
+      </geometry>
+      <material name="black">
+        <color rgba="0.0 0.0 0.0 1.0"/>
+      </material>
+    </visual>
+    <gazebo>
+      <plugin name="gazebo_ros_motor_model" filename="libgazebo_ros_motor_model.so">
+        <body_name>propeller_4</body_name>
+      </plugin>
+    </gazebo>
+  </link>
+  <joint name="tilt_joint_p4" type="revolute">
+    <parent link="base_link"/>
+    <child link="propeller_4"/>
+    <origin xyz="-0.1 -0.1 0.125"/>
+    <axis xyz="1 0 0"/>
+    <limit effort="1.0" velocity="0.5" lower="-0.2" upper="0.2"/>
+  </joint>
+
+</robot>
+
